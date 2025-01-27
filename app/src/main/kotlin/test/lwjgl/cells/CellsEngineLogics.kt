@@ -29,7 +29,7 @@ internal class CellsEngineLogics(
             size = size,
             measure = measure,
             camera = MutableCamera(
-                speed = speedOf(1.0),
+                speed = speedOf(8.0),
                 offset = MutableOffset(
                     dX = (ps.width - size.width) / 2,
                     dY = (ps.height - size.height) / 2,
@@ -37,10 +37,13 @@ internal class CellsEngineLogics(
             )
         )
     }
-    private val calculations = Calculations(engine = engine)
-    private val renders = Renders(
-        env = env,
+    private val calculations = Calculations(
         engine = engine,
+        env = env,
+    )
+    private val renders = Renders(
+        engine = engine,
+        env = env,
     )
     private val interactions = Interactions(env = env)
     override val inputCallback = object : EngineInputCallback {
