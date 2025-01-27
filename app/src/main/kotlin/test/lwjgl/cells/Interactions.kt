@@ -8,6 +8,12 @@ internal class Interactions(
     fun onPress(button: KeyboardButton) {
         when (button) {
             KeyboardButton.Escape -> env.stopped = true
+            KeyboardButton.Minus -> {
+                if (env.measure.magnitude > 16.0) env.measure.magnitude -= 8.0
+            }
+            KeyboardButton.Equal -> {
+                if (env.measure.magnitude < 64.0) env.measure.magnitude += 8.0
+            }
             else -> Unit
         }
     }

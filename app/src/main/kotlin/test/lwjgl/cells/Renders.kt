@@ -14,12 +14,12 @@ import sp.kx.math.vectorOf
 
 internal class Renders(
     private val engine: Engine,
+    private val env: Environment,
 ) {
-    private val measure = measureOf(24.0)
-    private val ps = engine.property.pictureSize / measure
-    private val camera = Point.Center
+    private val measure = env.measure
 
     private fun onRenderOffset(canvas: Canvas, offset: Offset, color: Color) {
+        val ps = engine.property.pictureSize / measure
         for (it in 2..ps.width.toInt()) {
             val dX = it - offset.dX
             val value = java.lang.Math.floor(dX).toInt()
@@ -59,14 +59,15 @@ internal class Renders(
     }
 
     fun onRender(canvas: Canvas) {
-        val w = 8
-        val h = 8
-        val offset = Offset.Empty.plus(
-            size = ps,
-            dX = - w.toDouble(),
-            dY = - h.toDouble(),
-            multiplier = 0.5,
-        )
+        val w = env.size.width
+        val h = env.size.height
+//        val offset = Offset.Empty.plus(
+//            size = ps,
+//            dX = - w.toDouble(),
+//            dY = - h.toDouble(),
+//            multiplier = 0.5,
+//        )
+        val offset = env.camera.offset
         onRenderOffset(canvas = canvas, offset = offset, color = Color.Gray.copy(alpha = 0.5f))
         for (x in 0..w) {
             canvas.vectors.draw(
