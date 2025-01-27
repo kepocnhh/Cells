@@ -8,35 +8,33 @@ import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.input.KeyboardButton
 import sp.kx.math.Point
 import sp.kx.math.measure.frequency
-import sp.kx.math.measure.measureOf
 
 internal class CellsEngineLogics(
     private val engine: Engine,
 ) : EngineLogics {
-    private lateinit var ses: Unit
+    private val env = MutableEnvironment()
+    private val calculations = Calculations(engine = engine)
+    private val renders = Renders(engine = engine)
+    private val interactions = Interactions(env = env)
     override val inputCallback = object : EngineInputCallback {
         override fun onKeyboardButton(button: KeyboardButton, isPressed: Boolean) {
-            if (!isPressed) return
-            when (button) {
-                KeyboardButton.Escape -> ses = Unit
-                else -> Unit
-            }
+            if (!isPressed) interactions.onPress(button = button)
         }
     }
-    private val measure = measureOf(24.0)
 
     override fun onRender(canvas: Canvas) {
         val fps = engine.property.time.frequency()
         canvas.texts.draw(
             color = Color.Green,
-            fontHeight = 1.0,
+            fontHeight = 24.0,
             text = String.format("%6.2f", fps),
             pointTopLeft = Point.Center,
-            measure = measure,
         )
+        calculations.onPreRender()
+        renders.onRender(canvas = canvas)
     }
 
     override fun shouldEngineStop(): Boolean {
-        return ::ses.isInitialized
+        return env.ses
     }
 }
