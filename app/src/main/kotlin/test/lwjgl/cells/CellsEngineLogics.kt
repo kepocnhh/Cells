@@ -6,8 +6,8 @@ import sp.kx.lwjgl.engine.EngineLogics
 import sp.kx.lwjgl.entity.Canvas
 import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.input.KeyboardButton
-import sp.kx.math.Point
 import sp.kx.math.measure.frequency
+import sp.kx.math.pointOf
 
 internal class CellsEngineLogics(
     private val engine: Engine,
@@ -24,17 +24,18 @@ internal class CellsEngineLogics(
 
     override fun onRender(canvas: Canvas) {
         val fps = engine.property.time.frequency()
+        val ps = engine.property.pictureSize
         canvas.texts.draw(
             color = Color.Green,
             fontHeight = 24.0,
             text = String.format("%6.2f", fps),
-            pointTopLeft = Point.Center,
+            pointTopLeft = pointOf(x = ps.width - 128.0, y = ps.height - 48.0),
         )
         calculations.onPreRender()
         renders.onRender(canvas = canvas)
     }
 
     override fun shouldEngineStop(): Boolean {
-        return env.ses
+        return env.stopped
     }
 }

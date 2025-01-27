@@ -2,11 +2,89 @@ package test.lwjgl.cells
 
 import sp.kx.lwjgl.engine.Engine
 import sp.kx.lwjgl.entity.Canvas
+import sp.kx.lwjgl.entity.Color
+import sp.kx.lwjgl.entity.copy
+import sp.kx.math.Offset
+import sp.kx.math.Point
+import sp.kx.math.copy
+import sp.kx.math.div
+import sp.kx.math.measure.measureOf
+import sp.kx.math.plus
+import sp.kx.math.vectorOf
 
 internal class Renders(
     private val engine: Engine,
 ) {
+    private val measure = measureOf(24.0)
+    private val ps = engine.property.pictureSize / measure
+    private val camera = Point.Center
+
+    private fun onRenderOffset(canvas: Canvas, offset: Offset, color: Color) {
+        for (it in 2..ps.width.toInt()) {
+            val dX = it - offset.dX
+            val value = java.lang.Math.floor(dX).toInt()
+            val x = offset.dX + value
+            canvas.texts.draw(
+                color = color,
+                fontHeight = 0.75,
+                pointTopLeft = Point.Center.copy(x = x),
+                text = "$value",
+                measure = measure,
+            )
+            canvas.vectors.draw(
+                color = color,
+                vector = vectorOf(x, 0.0, x, ps.height),
+                lineWidth = 0.05,
+                measure = measure,
+            )
+        }
+        for (it in 2..ps.height.toInt()) {
+            val dY = it - offset.dY
+            val value = java.lang.Math.floor(dY).toInt()
+            val y = offset.dY + value
+            canvas.texts.draw(
+                color = color,
+                fontHeight = 0.75,
+                pointTopLeft = Point.Center.copy(y = y),
+                text = "$value",
+                measure = measure,
+            )
+            canvas.vectors.draw(
+                color = color,
+                vector = vectorOf(0.0, y, ps.width, y),
+                lineWidth = 0.05,
+                measure = measure,
+            )
+        }
+    }
+
     fun onRender(canvas: Canvas) {
-        // todo
+        val w = 8
+        val h = 8
+        val offset = Offset.Empty.plus(
+            size = ps,
+            dX = - w.toDouble(),
+            dY = - h.toDouble(),
+            multiplier = 0.5,
+        )
+        onRenderOffset(canvas = canvas, offset = offset, color = Color.Gray.copy(alpha = 0.5f))
+        for (x in 0..w) {
+            canvas.vectors.draw(
+                color = Color.Gray,
+                vector = vectorOf(x, 0, x, h),
+                lineWidth = 0.1,
+                offset = offset,
+                measure = measure,
+            )
+        }
+        for (y in 0..h) {
+            canvas.vectors.draw(
+                color = Color.Gray,
+                vector = vectorOf(0, y, w, y),
+                lineWidth = 0.1,
+                offset = offset,
+                measure = measure,
+            )
+        }
     }
 }

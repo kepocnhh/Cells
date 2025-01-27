@@ -7,7 +7,7 @@ internal class Interactions(
 ) {
     fun onPress(button: KeyboardButton) {
         when (button) {
-            KeyboardButton.Escape -> env.ses = true
+            KeyboardButton.Escape -> env.stopped = true
             else -> Unit
         }
     }
