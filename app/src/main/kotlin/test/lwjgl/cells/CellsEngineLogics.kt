@@ -7,11 +7,15 @@ import sp.kx.lwjgl.entity.Canvas
 import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.input.KeyboardButton
 import sp.kx.math.MutableOffset
+import sp.kx.math.center
 import sp.kx.math.div
 import sp.kx.math.measure.MutableDoubleMeasure
 import sp.kx.math.measure.frequency
 import sp.kx.math.measure.speedOf
+import sp.kx.math.minus
+import sp.kx.math.plus
 import sp.kx.math.pointOf
+import sp.kx.math.toString
 import test.lwjgl.cells.entity.IntSize
 import test.lwjgl.cells.entity.MutableCamera
 
@@ -27,8 +31,8 @@ internal class CellsEngineLogics(
         )
         MutableEnvironment(
             size = size,
-            measure = measure,
             camera = MutableCamera(
+                measure = measure,
                 speed = speedOf(8.0),
                 offset = MutableOffset(
                     dX = (ps.width - size.width) / 2,
@@ -45,7 +49,10 @@ internal class CellsEngineLogics(
         engine = engine,
         env = env,
     )
-    private val interactions = Interactions(env = env)
+    private val interactions = Interactions(
+        engine = engine,
+        env = env,
+    )
     override val inputCallback = object : EngineInputCallback {
         override fun onKeyboardButton(button: KeyboardButton, isPressed: Boolean) {
             if (!isPressed) interactions.onPress(button = button)
@@ -58,17 +65,25 @@ internal class CellsEngineLogics(
         //
         val fps = engine.property.time.frequency()
         val ps = engine.property.pictureSize
+        val fontHeight = 24.0
         canvas.texts.draw(
             color = Color.Green,
-            fontHeight = 24.0,
+            fontHeight = fontHeight,
             text = String.format("%6.2f", fps),
-            pointTopLeft = pointOf(x = ps.width - 128.0, y = ps.height - 48.0),
+            pointTopLeft = pointOf(x = ps.width - 128.0, y = ps.height - fontHeight * 2),
+        )
+        val center = ps.div(env.camera.measure).center().minus(env.camera.offset)
+        canvas.texts.draw(
+            color = Color.Green,
+            fontHeight = fontHeight,
+            text = String.format("%+07.2f:%+07.2f", center.dX, center.dY),
+            pointTopLeft = pointOf(x = fontHeight * 2, y = ps.height - fontHeight * 3),
         )
         canvas.texts.draw(
             color = Color.Green,
-            fontHeight = 24.0,
-            text = String.format("%6.2f", env.measure.magnitude),
-            pointTopLeft = pointOf(x = 48.0, y = ps.height - 48.0),
+            fontHeight = fontHeight,
+            text = String.format("%6.2f", env.camera.measure.magnitude),
+            pointTopLeft = pointOf(x = fontHeight * 2, y = ps.height - fontHeight * 2),
         )
     }
 

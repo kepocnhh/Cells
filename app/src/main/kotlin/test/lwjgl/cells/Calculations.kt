@@ -6,7 +6,6 @@ import sp.kx.lwjgl.entity.input.KeyboardButton
 import sp.kx.math.MutableOffset
 import sp.kx.math.Offset
 import sp.kx.math.angleOf
-import sp.kx.math.eq
 import sp.kx.math.isEmpty
 import sp.kx.math.measure.diff
 import sp.kx.math.radians

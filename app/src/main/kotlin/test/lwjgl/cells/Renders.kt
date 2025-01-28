@@ -6,19 +6,17 @@ import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.copy
 import sp.kx.math.Offset
 import sp.kx.math.Point
+import sp.kx.math.centerPoint
 import sp.kx.math.copy
 import sp.kx.math.div
-import sp.kx.math.measure.measureOf
-import sp.kx.math.plus
 import sp.kx.math.vectorOf
 
 internal class Renders(
     private val engine: Engine,
     private val env: Environment,
 ) {
-    private val measure = env.measure
-
     private fun onRenderOffset(canvas: Canvas, offset: Offset, color: Color) {
+        val measure = env.camera.measure
         val ps = engine.property.pictureSize / measure
         for (it in 2..ps.width.toInt()) {
             val dX = it - offset.dX
@@ -61,13 +59,8 @@ internal class Renders(
     fun onRender(canvas: Canvas) {
         val w = env.size.width
         val h = env.size.height
-//        val offset = Offset.Empty.plus(
-//            size = ps,
-//            dX = - w.toDouble(),
-//            dY = - h.toDouble(),
-//            multiplier = 0.5,
-//        )
         val offset = env.camera.offset
+        val measure = env.camera.measure
         onRenderOffset(canvas = canvas, offset = offset, color = Color.Gray.copy(alpha = 0.5f))
         for (x in 0..w) {
             canvas.vectors.draw(
@@ -87,5 +80,11 @@ internal class Renders(
                 measure = measure,
             )
         }
+        canvas.polygons.drawCircle(
+            color = Color.Green,
+            pointCenter = engine.property.pictureSize.centerPoint(),
+            radius = 4.0,
+            edgeCount = 4,
+        )
     }
 }
