@@ -16,6 +16,7 @@ internal class Renders(
     private val env: Environment,
 ) {
     private fun onRenderOffset(canvas: Canvas, offset: Offset, color: Color) {
+        return
         val measure = env.camera.measure
         val ps = engine.property.pictureSize / measure
         for (it in 2..ps.width.toInt()) {
@@ -32,7 +33,7 @@ internal class Renders(
             canvas.vectors.draw(
                 color = color,
                 vector = vectorOf(x, 0.0, x, ps.height),
-                lineWidth = 0.05,
+                lineWidth = 0.1,
                 measure = measure,
             )
         }
@@ -50,7 +51,7 @@ internal class Renders(
             canvas.vectors.draw(
                 color = color,
                 vector = vectorOf(0.0, y, ps.width, y),
-                lineWidth = 0.05,
+                lineWidth = 0.1,
                 measure = measure,
             )
         }

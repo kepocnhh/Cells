@@ -7,15 +7,20 @@ import sp.kx.lwjgl.entity.Canvas
 import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.input.KeyboardButton
 import sp.kx.math.MutableOffset
+import sp.kx.math.Point
+import sp.kx.math.angleOf
 import sp.kx.math.center
+import sp.kx.math.centerPoint
+import sp.kx.math.distanceOf
 import sp.kx.math.div
 import sp.kx.math.measure.MutableDoubleMeasure
+import sp.kx.math.measure.diff
 import sp.kx.math.measure.frequency
 import sp.kx.math.measure.speedOf
 import sp.kx.math.minus
+import sp.kx.math.moved
 import sp.kx.math.plus
 import sp.kx.math.pointOf
-import sp.kx.math.toString
 import test.lwjgl.cells.entity.IntSize
 import test.lwjgl.cells.entity.MutableCamera
 
@@ -60,11 +65,19 @@ internal class CellsEngineLogics(
     }
 
     override fun onRender(canvas: Canvas) {
+        val fps = engine.property.time.frequency()
+        //
         calculations.onPreRender()
         renders.onRender(canvas = canvas)
         //
-        val fps = engine.property.time.frequency()
         val ps = engine.property.pictureSize
+//        val c = ps.div(env.camera.measure).centerPoint()
+//        val p = Point.Center.plus(env.camera.offset)
+//        val r = c.moved(
+//            length = distanceOf(c, p),
+//            angle = angleOf(c, p) + speedOf(1.0).length(engine.property.time.diff()),
+//        )
+//        env.camera.offset.set(r.x,r.y)
         val fontHeight = 24.0
         canvas.texts.draw(
             color = Color.Green,
@@ -84,6 +97,14 @@ internal class CellsEngineLogics(
             fontHeight = fontHeight,
             text = String.format("%6.2f", env.camera.measure.magnitude),
             pointTopLeft = pointOf(x = fontHeight * 2, y = ps.height - fontHeight * 2),
+        )
+        //
+        canvas.polygons.drawCircle(
+            color = Color.Yellow,
+            pointCenter = Point.Center.plus(env.camera.offset),
+            radius = 0.25,
+            edgeCount = 4,
+            measure = env.camera.measure,
         )
     }
 
