@@ -4,19 +4,20 @@ import sp.kx.lwjgl.engine.Engine
 import sp.kx.lwjgl.entity.Canvas
 import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.copy
-import sp.kx.math.Offset
 import sp.kx.math.Point
 import sp.kx.math.centerPoint
 import sp.kx.math.copy
 import sp.kx.math.div
-import sp.kx.math.vectorOf
+import sp.kx.math.pointOf
 import sp.kx.math.times
+import sp.kx.math.vectorOf
 
 internal class Renders(
     private val engine: Engine,
     private val env: Environment,
 ) {
-    private fun onRenderOffset(canvas: Canvas, offset: Offset) {
+    private fun onRenderOffset(canvas: Canvas) {
+        val offset = env.camera.offset
         val measure = env.camera.measure
         val ps = engine.property.pictureSize / measure
         for (it in 2..ps.width.toInt()) {
@@ -63,12 +64,34 @@ internal class Renders(
         }
     }
 
+    private fun onRenderDebug(canvas: Canvas) {
+        val pictureSize = engine.property.pictureSize
+        val fontHeight = 24.0
+        canvas.texts.draw(
+            color = Color.Green,
+            fontHeight = fontHeight,
+            text = String.format("%6.2f", env.fps),
+            pointTopLeft = pointOf(x = pictureSize.width - 128.0, y = pictureSize.height - fontHeight * 2),
+        )
+        listOf(
+            String.format("m: %6.2f", env.camera.measure.magnitude),
+        ).forEachIndexed { index, text ->
+            canvas.texts.draw(
+                color = Color.Green,
+                fontHeight = fontHeight,
+                text = text,
+                pointTopLeft = pointOf(x = fontHeight * 2, y = pictureSize.height - fontHeight * (index + 2)),
+            )
+        }
+    }
+
     fun onRender(canvas: Canvas) {
+        if (env.offset) onRenderOffset(canvas = canvas)
+        //
+        val offset = env.camera.offset
+        val measure = env.camera.measure
         val w = env.size.width
         val h = env.size.height
-        val offset = env.camera.offset
-        if (env.offset) onRenderOffset(canvas = canvas, offset = offset)
-        val measure = env.camera.measure
         for (x in 0..w) {
             canvas.vectors.draw(
                 color = Color.Gray,
@@ -93,5 +116,7 @@ internal class Renders(
             radius = 4.0,
             edgeCount = 4,
         )
+        //
+        if (env.debug) onRenderDebug(canvas = canvas)
     }
 }

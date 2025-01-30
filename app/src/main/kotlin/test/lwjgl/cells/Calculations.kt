@@ -8,6 +8,7 @@ import sp.kx.math.Offset
 import sp.kx.math.angleOf
 import sp.kx.math.isEmpty
 import sp.kx.math.measure.diff
+import sp.kx.math.measure.frequency
 import sp.kx.math.radians
 
 internal class Calculations(
@@ -32,6 +33,7 @@ internal class Calculations(
     }
 
     fun onPreRender() {
+        env.fps = engine.property.time.frequency()
         val offset = getCameraOffset(keyboard = engine.input.keyboard)
         if (!offset.isEmpty()) {
             val length = env.camera.speed.length(engine.property.time.diff())

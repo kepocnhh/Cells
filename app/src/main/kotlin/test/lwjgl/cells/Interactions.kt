@@ -37,6 +37,9 @@ internal class Interactions(
             KeyboardButton.O -> {
                 env.offset = !env.offset
             }
+            KeyboardButton.P -> {
+                env.debug = !env.debug
+            }
             else -> Unit
         }
     }

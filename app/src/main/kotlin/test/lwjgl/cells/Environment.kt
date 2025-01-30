@@ -7,4 +7,6 @@ internal interface Environment {
     val size: IntSize
     val camera: Camera
     val offset: Boolean
+    val fps: Double
+    val debug: Boolean
 }
