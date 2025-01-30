@@ -6,6 +6,7 @@ import test.lwjgl.cells.entity.MutableCamera
 internal class MutableEnvironment(
     override val size: IntSize,
     override val camera: MutableCamera,
+    override var offset: Boolean,
 ) : Environment {
     var stopped: Boolean = false
 }

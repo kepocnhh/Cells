@@ -6,4 +6,5 @@ import test.lwjgl.cells.entity.IntSize
 internal interface Environment {
     val size: IntSize
     val camera: Camera
+    val offset: Boolean
 }

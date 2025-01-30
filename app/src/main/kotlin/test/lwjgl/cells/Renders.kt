@@ -10,19 +10,24 @@ import sp.kx.math.centerPoint
 import sp.kx.math.copy
 import sp.kx.math.div
 import sp.kx.math.vectorOf
+import sp.kx.math.times
 
 internal class Renders(
     private val engine: Engine,
     private val env: Environment,
 ) {
-    private fun onRenderOffset(canvas: Canvas, offset: Offset, color: Color) {
-        return
+    private fun onRenderOffset(canvas: Canvas, offset: Offset) {
         val measure = env.camera.measure
         val ps = engine.property.pictureSize / measure
         for (it in 2..ps.width.toInt()) {
             val dX = it - offset.dX
             val value = java.lang.Math.floor(dX).toInt()
             val x = offset.dX + value
+            val color = when {
+                value == 0 -> Color.Yellow.copy(alpha = 0.5f)
+                value % 2 == 0 -> Color.Gray
+                else -> Color.Gray.copy(alpha = 0.5f)
+            }
             canvas.texts.draw(
                 color = color,
                 fontHeight = 0.75,
@@ -32,15 +37,18 @@ internal class Renders(
             )
             canvas.vectors.draw(
                 color = color,
-                vector = vectorOf(x, 0.0, x, ps.height),
-                lineWidth = 0.1,
-                measure = measure,
+                vector = vectorOf(x, 0.0, x, ps.height) * measure,
             )
         }
         for (it in 2..ps.height.toInt()) {
             val dY = it - offset.dY
             val value = java.lang.Math.floor(dY).toInt()
             val y = offset.dY + value
+            val color = when {
+                value == 0 -> Color.Yellow.copy(alpha = 0.5f)
+                value % 2 == 0 -> Color.Gray.copy(alpha = 0.75f)
+                else -> Color.Gray.copy(alpha = 0.5f)
+            }
             canvas.texts.draw(
                 color = color,
                 fontHeight = 0.75,
@@ -50,9 +58,7 @@ internal class Renders(
             )
             canvas.vectors.draw(
                 color = color,
-                vector = vectorOf(0.0, y, ps.width, y),
-                lineWidth = 0.1,
-                measure = measure,
+                vector = vectorOf(0.0, y, ps.width, y) * measure,
             )
         }
     }
@@ -61,8 +67,8 @@ internal class Renders(
         val w = env.size.width
         val h = env.size.height
         val offset = env.camera.offset
+        if (env.offset) onRenderOffset(canvas = canvas, offset = offset)
         val measure = env.camera.measure
-        onRenderOffset(canvas = canvas, offset = offset, color = Color.Gray.copy(alpha = 0.5f))
         for (x in 0..w) {
             canvas.vectors.draw(
                 color = Color.Gray,

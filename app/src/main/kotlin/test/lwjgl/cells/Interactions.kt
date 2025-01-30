@@ -25,7 +25,7 @@ internal class Interactions(
         when (button) {
             KeyboardButton.Escape -> env.stopped = true
             KeyboardButton.Minus -> {
-                if (env.camera.measure.magnitude > 16.0) {
+                if (env.camera.measure.magnitude > 8.0) {
                     setMagnitude(magnitude = env.camera.measure.magnitude - 8.0)
                 }
             }
@@ -33,6 +33,9 @@ internal class Interactions(
                 if (env.camera.measure.magnitude < 64.0) {
                     setMagnitude(magnitude = env.camera.measure.magnitude + 8.0)
                 }
+            }
+            KeyboardButton.O -> {
+                env.offset = !env.offset
             }
             else -> Unit
         }

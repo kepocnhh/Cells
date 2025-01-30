@@ -43,7 +43,8 @@ internal class CellsEngineLogics(
                     dX = (ps.width - size.width) / 2,
                     dY = (ps.height - size.height) / 2,
                 ),
-            )
+            ),
+            offset = true,
         )
     }
     private val calculations = Calculations(
@@ -66,46 +67,28 @@ internal class CellsEngineLogics(
 
     override fun onRender(canvas: Canvas) {
         val fps = engine.property.time.frequency()
+        val pictureSize = engine.property.pictureSize
         //
         calculations.onPreRender()
         renders.onRender(canvas = canvas)
         //
-        val ps = engine.property.pictureSize
-//        val c = ps.div(env.camera.measure).centerPoint()
-//        val p = Point.Center.plus(env.camera.offset)
-//        val r = c.moved(
-//            length = distanceOf(c, p),
-//            angle = angleOf(c, p) + speedOf(1.0).length(engine.property.time.diff()),
-//        )
-//        env.camera.offset.set(r.x,r.y)
         val fontHeight = 24.0
         canvas.texts.draw(
             color = Color.Green,
             fontHeight = fontHeight,
             text = String.format("%6.2f", fps),
-            pointTopLeft = pointOf(x = ps.width - 128.0, y = ps.height - fontHeight * 2),
+            pointTopLeft = pointOf(x = pictureSize.width - 128.0, y = pictureSize.height - fontHeight * 2),
         )
-        val center = ps.div(env.camera.measure).center().minus(env.camera.offset)
-        canvas.texts.draw(
-            color = Color.Green,
-            fontHeight = fontHeight,
-            text = String.format("%+07.2f:%+07.2f", center.dX, center.dY),
-            pointTopLeft = pointOf(x = fontHeight * 2, y = ps.height - fontHeight * 3),
-        )
-        canvas.texts.draw(
-            color = Color.Green,
-            fontHeight = fontHeight,
-            text = String.format("%6.2f", env.camera.measure.magnitude),
-            pointTopLeft = pointOf(x = fontHeight * 2, y = ps.height - fontHeight * 2),
-        )
-        //
-        canvas.polygons.drawCircle(
-            color = Color.Yellow,
-            pointCenter = Point.Center.plus(env.camera.offset),
-            radius = 0.25,
-            edgeCount = 4,
-            measure = env.camera.measure,
-        )
+        listOf(
+            String.format("m: %6.2f", env.camera.measure.magnitude),
+        ).forEachIndexed { index, text ->
+            canvas.texts.draw(
+                color = Color.Green,
+                fontHeight = fontHeight,
+                text = text,
+                pointTopLeft = pointOf(x = fontHeight * 2, y = pictureSize.height - fontHeight * (index + 2)),
+            )
+        }
     }
 
     override fun shouldEngineStop(): Boolean {
