@@ -20,7 +20,7 @@ internal class CellsEngineLogics(
 ) : EngineLogics {
     private val env = engine.let {
         val measure = MutableDoubleMeasure(24.0)
-        val ps = it.property.pictureSize / measure
+        val psu = it.property.pictureSize / measure
         val grid = IntSize(
             width = 8,
             height = 6,
@@ -37,8 +37,8 @@ internal class CellsEngineLogics(
                 measure = measure,
                 speed = speedOf(8.0),
                 offset = MutableOffset(
-                    dX = (ps.width - cellSize.width) / 2 - focused.x * cellSize.width,
-                    dY = (ps.height - cellSize.height) / 2 - focused.y * cellSize.height,
+                    dX = (psu.width - cellSize.width) / 2 - focused.x * cellSize.width,
+                    dY = (psu.height - cellSize.height) / 2 - focused.y * cellSize.height,
                 ),
             ),
             offset = true,

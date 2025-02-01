@@ -65,9 +65,20 @@ internal class Interactions(
                 }
             }
             KeyboardButton.Space -> {
-                if (env.focused != env.selected) {
-                    env.selected.set(other = env.focused)
+                if (!engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
+                    if (env.focused != env.selected) {
+                        env.selected.set(other = env.focused)
+                    }
                 }
+            }
+            KeyboardButton.C -> {
+                val psu = engine.property.pictureSize / env.camera.measure
+                val cellSize = env.cellSize
+                val target = env.selected
+                env.camera.offset.set(
+                    dX = (psu.width - cellSize.width) / 2 - target.x * cellSize.width,
+                    dY = (psu.height - cellSize.height) / 2 - target.y * cellSize.height,
+                )
             }
             else -> Unit
         }
