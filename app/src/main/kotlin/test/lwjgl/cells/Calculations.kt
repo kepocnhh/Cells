@@ -19,15 +19,15 @@ internal class Calculations(
         val offset = MutableOffset(0.0, 0.0)
         val left = keyboard.isPressed(KeyboardButton.A)
         if (keyboard.isPressed(KeyboardButton.D)) {
-            if (!left) offset.dX = 1.0
+            if (!left) offset.dX = -1.0
         } else if (left) {
-            offset.dX = -1.0
+            offset.dX = 1.0
         }
         val top = keyboard.isPressed(KeyboardButton.W)
         if (keyboard.isPressed(KeyboardButton.S)) {
-            if (!top) offset.dY = 1.0
+            if (!top) offset.dY = -1.0
         } else if (top) {
-            offset.dY = -1.0
+            offset.dY = 1.0
         }
         return offset
     }
