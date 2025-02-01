@@ -3,6 +3,7 @@ package test.lwjgl.cells
 import sp.kx.lwjgl.engine.Engine
 import sp.kx.lwjgl.entity.Canvas
 import sp.kx.lwjgl.entity.Color
+import sp.kx.lwjgl.entity.colorOf
 import sp.kx.lwjgl.entity.copy
 import sp.kx.math.Offset
 import sp.kx.math.Point
@@ -129,7 +130,7 @@ internal class Renders(
         val measure = env.camera.measure
         for (x in 0..env.grid.width) {
             canvas.vectors.draw(
-                color = Color.Gray,
+                color = colorOf(0xff1565C0),
                 vector = Point.Center.copy(x = x * env.cellSize.width)
                     .toVector(Offset.Empty.copy(dY = env.grid.height * env.cellSize.height)),
                 offset = offset,
@@ -138,7 +139,7 @@ internal class Renders(
         }
         for (y in 0..env.grid.height) {
             canvas.vectors.draw(
-                color = Color.Gray,
+                color = colorOf(0xff1565C0),
                 vector = Point.Center.copy(y = y * env.cellSize.height)
                     .toVector(Offset.Empty.copy(dX = env.grid.width * env.cellSize.width)),
                 offset = offset,

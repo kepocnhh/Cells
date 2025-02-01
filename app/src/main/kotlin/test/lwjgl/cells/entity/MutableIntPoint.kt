@@ -6,6 +6,11 @@ internal class MutableIntPoint(
     override var x: Int,
     override var y: Int,
 ) : IntPoint {
+    fun set(other: IntPoint) {
+        this.x = other.x
+        this.y = other.y
+    }
+
     fun set(x: Int, y: Int) {
         this.x = x
         this.y = y

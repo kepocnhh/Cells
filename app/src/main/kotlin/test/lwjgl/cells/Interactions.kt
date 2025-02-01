@@ -64,6 +64,11 @@ internal class Interactions(
                     }
                 }
             }
+            KeyboardButton.Space -> {
+                if (env.focused != env.selected) {
+                    env.selected.set(other = env.focused)
+                }
+            }
             else -> Unit
         }
     }

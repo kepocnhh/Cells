@@ -26,17 +26,19 @@ internal class CellsEngineLogics(
             height = 6,
         )
         val cellSize = sizeOf(2.0, 2.0)
+        val selected = MutableIntPoint(x = 1, y = 2)
+        val focused = MutableIntPoint(x = selected.x, y = selected.y)
         MutableEnvironment(
             grid = grid,
             cellSize = cellSize,
-            selected = MutableIntPoint(x = 0, y = 0),
-            focused = MutableIntPoint(x = 0, y = 0),
+            selected = selected,
+            focused = focused,
             camera = MutableCamera(
                 measure = measure,
                 speed = speedOf(8.0),
                 offset = MutableOffset(
-                    dX = (ps.width - grid.width * cellSize.width) / 2,
-                    dY = (ps.height - grid.height * cellSize.height) / 2,
+                    dX = (ps.width - cellSize.width) / 2 - focused.x * cellSize.width,
+                    dY = (ps.height - cellSize.height) / 2 - focused.y * cellSize.height,
                 ),
             ),
             offset = true,
