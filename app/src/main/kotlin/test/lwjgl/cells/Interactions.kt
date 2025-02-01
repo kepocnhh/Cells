@@ -11,8 +11,9 @@ internal class Interactions(
     private fun setMagnitude(magnitude: Double) {
         val ps = engine.property.pictureSize
         val op = ps.div(env.camera.measure)
-        val dw = op.width / 2 - env.camera.offset.dX
-        val dh = op.height / 2 - env.camera.offset.dY
+        val offset = env.camera.offset.actual
+        val dw = op.width / 2 - offset.dX
+        val dh = op.height / 2 - offset.dY
         env.camera.measure.magnitude = magnitude
         val np = ps.div(env.camera.measure)
         env.camera.offset.set(
@@ -75,7 +76,7 @@ internal class Interactions(
                 val psu = engine.property.pictureSize / env.camera.measure
                 val cellSize = env.cellSize
                 val target = env.selected
-                env.camera.offset.set(
+                env.camera.offset.expected.set(
                     dX = (psu.width - cellSize.width) / 2 - target.x * cellSize.width,
                     dY = (psu.height - cellSize.height) / 2 - target.y * cellSize.height,
                 )

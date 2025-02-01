@@ -30,7 +30,7 @@ internal class Renders(
             color = Color.Green.copy(alpha = 0.5f),
             vector = pointOf(x = 0.0, y = ps.height / 2).toVector(Offset.Empty.copy(dX = ps.width)),
         )
-        val offset = env.camera.offset
+        val offset = env.camera.offset.actual
         val measure = env.camera.measure
         val psu = ps / measure
         val center = offsetOf(
@@ -107,10 +107,12 @@ internal class Renders(
             pointTopLeft = pointOf(x = ps.width - 128.0, y = ps.height - fontHeight * 2),
         )
         val psu = ps / env.camera.measure
+        val offset = env.camera.offset.actual
         listOf(
             String.format("m: %6.2f", env.camera.measure.magnitude),
-            String.format("o: %+6.2f %+6.2f", env.camera.offset.dX, env.camera.offset.dY),
-            String.format("c: %+6.2f %+6.2f", psu.width / 2 - env.camera.offset.dX, psu.height / 2 - env.camera.offset.dY),
+            String.format("o: %+6.2f %+6.2f", offset.dX, offset.dY),
+            String.format("e: %+6.2f %+6.2f", env.camera.offset.expected.dX, env.camera.offset.expected.dY),
+            String.format("c: %+6.2f %+6.2f", psu.width / 2 - offset.dX, psu.height / 2 - offset.dY),
             String.format("s: %2d %2d", env.selected.x, env.selected.y),
             String.format("f: %2d %2d", env.focused.x, env.focused.y),
         ).forEachIndexed { index, text ->
@@ -126,7 +128,7 @@ internal class Renders(
     fun onRender(canvas: Canvas) {
         if (env.offset) onRenderOffset(canvas = canvas)
         //
-        val offset = env.camera.offset
+        val offset = env.camera.offset.actual
         val measure = env.camera.measure
         for (x in 0..env.grid.width) {
             canvas.vectors.draw(

@@ -10,9 +10,11 @@ import sp.kx.math.Size
 import sp.kx.math.div
 import sp.kx.math.measure.MutableDoubleMeasure
 import sp.kx.math.measure.speedOf
+import sp.kx.math.mut
 import sp.kx.math.sizeOf
 import test.lwjgl.cells.entity.IntSize
 import test.lwjgl.cells.entity.MutableCamera
+import test.lwjgl.cells.entity.MutableCameraOffset
 import test.lwjgl.cells.entity.MutableIntPoint
 
 internal class CellsEngineLogics(
@@ -28,6 +30,10 @@ internal class CellsEngineLogics(
         val cellSize = sizeOf(2.0, 2.0)
         val selected = MutableIntPoint(x = 1, y = 2)
         val focused = MutableIntPoint(x = selected.x, y = selected.y)
+        val offset = MutableOffset(
+            dX = (psu.width - cellSize.width) / 2 - focused.x * cellSize.width,
+            dY = (psu.height - cellSize.height) / 2 - focused.y * cellSize.height,
+        )
         MutableEnvironment(
             grid = grid,
             cellSize = cellSize,
@@ -35,10 +41,11 @@ internal class CellsEngineLogics(
             focused = focused,
             camera = MutableCamera(
                 measure = measure,
-                speed = speedOf(8.0),
-                offset = MutableOffset(
-                    dX = (psu.width - cellSize.width) / 2 - focused.x * cellSize.width,
-                    dY = (psu.height - cellSize.height) / 2 - focused.y * cellSize.height,
+                moveSpeed = speedOf(8.0 * 2),
+                backSpeed = speedOf(8.0 * 4),
+                offset = MutableCameraOffset(
+                    expected = offset,
+                    actual = offset.mut(),
                 ),
             ),
             offset = true,
