@@ -6,9 +6,11 @@ import sp.kx.lwjgl.engine.EngineLogics
 import sp.kx.lwjgl.entity.Canvas
 import sp.kx.lwjgl.entity.input.KeyboardButton
 import sp.kx.math.MutableOffset
+import sp.kx.math.Size
 import sp.kx.math.div
 import sp.kx.math.measure.MutableDoubleMeasure
 import sp.kx.math.measure.speedOf
+import sp.kx.math.sizeOf
 import test.lwjgl.cells.entity.IntSize
 import test.lwjgl.cells.entity.MutableCamera
 import test.lwjgl.cells.entity.MutableIntPoint
@@ -19,19 +21,21 @@ internal class CellsEngineLogics(
     private val env = engine.let {
         val measure = MutableDoubleMeasure(24.0)
         val ps = it.property.pictureSize / measure
-        val size = IntSize(
+        val grid = IntSize(
             width = 8,
-            height = 8,
+            height = 6,
         )
+        val cellSize = sizeOf(2.0, 2.0)
         MutableEnvironment(
-            size = size,
+            grid = grid,
+            cellSize = cellSize,
             selected = MutableIntPoint(x = 0, y = 0),
             camera = MutableCamera(
                 measure = measure,
                 speed = speedOf(8.0),
                 offset = MutableOffset(
-                    dX = (ps.width - size.width) / 2,
-                    dY = (ps.height - size.height) / 2,
+                    dX = (ps.width - grid.width * cellSize.width) / 2,
+                    dY = (ps.height - grid.height * cellSize.height) / 2,
                 ),
             ),
             offset = true,

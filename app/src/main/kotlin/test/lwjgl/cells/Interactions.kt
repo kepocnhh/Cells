@@ -47,7 +47,7 @@ internal class Interactions(
             }
             KeyboardButton.D -> {
                 if (engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
-                    if (env.selected.x < env.size.width - 1) {
+                    if (env.selected.x < env.grid.width - 1) {
                         env.selected.x += 1
                     }
                 }
@@ -59,7 +59,7 @@ internal class Interactions(
             }
             KeyboardButton.S -> {
                 if (engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
-                    if (env.selected.y < env.size.height - 1) {
+                    if (env.selected.y < env.grid.height - 1) {
                         env.selected.y += 1
                     }
                 }

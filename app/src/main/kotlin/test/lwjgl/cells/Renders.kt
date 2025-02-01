@@ -126,21 +126,21 @@ internal class Renders(
         //
         val offset = env.camera.offset
         val measure = env.camera.measure
-        val w = env.size.width
-        val h = env.size.height
-        for (x in 0..w) {
+        for (x in 0..env.grid.width) {
             canvas.vectors.draw(
                 color = Color.Gray,
-                vector = vectorOf(x, 0, x, h),
+                vector = Point.Center.copy(x = x * env.cellSize.width)
+                    .toVector(Offset.Empty.copy(dY = env.grid.height * env.cellSize.height)),
                 lineWidth = 0.1,
                 offset = offset,
                 measure = measure,
             )
         }
-        for (y in 0..h) {
+        for (y in 0..env.grid.height) {
             canvas.vectors.draw(
                 color = Color.Gray,
-                vector = vectorOf(0, y, w, y),
+                vector = Point.Center.copy(y = y * env.cellSize.height)
+                    .toVector(Offset.Empty.copy(dX = env.grid.width * env.cellSize.width)),
                 lineWidth = 0.1,
                 offset = offset,
                 measure = measure,
@@ -148,8 +148,8 @@ internal class Renders(
         }
         canvas.polygons.drawRectangle(
             color = Color.White,
-            pointTopLeft = pointOf(x = env.selected.x, y = env.selected.y),
-            size = Size.Reference,
+            pointTopLeft = pointOf(x = env.selected.x * env.cellSize.width, y = env.selected.y * env.cellSize.height),
+            size = env.cellSize,
             lineWidth = 0.1,
             offset = offset,
             measure = measure,
