@@ -15,7 +15,9 @@ internal class Calculations(
     private val engine: Engine,
     private val env: MutableEnvironment,
 ) {
-    private fun getCameraOffset(keyboard: Keyboard): Offset {
+    private fun getCameraOffset(): Offset {
+        val keyboard = engine.input.keyboard
+        if (keyboard.isPressed(KeyboardButton.Shift)) return Offset.Empty
         val offset = MutableOffset(0.0, 0.0)
         val left = keyboard.isPressed(KeyboardButton.A)
         if (keyboard.isPressed(KeyboardButton.D)) {
@@ -34,7 +36,7 @@ internal class Calculations(
 
     fun onPreRender() {
         env.fps = engine.property.time.frequency()
-        val offset = getCameraOffset(keyboard = engine.input.keyboard)
+        val offset = getCameraOffset()
         if (!offset.isEmpty()) {
             val length = env.camera.speed.length(engine.property.time.diff())
             val angle = angleOf(offset).radians()

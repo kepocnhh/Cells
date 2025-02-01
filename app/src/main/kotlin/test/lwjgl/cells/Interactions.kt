@@ -40,6 +40,30 @@ internal class Interactions(
             KeyboardButton.P -> {
                 env.debug = !env.debug
             }
+            KeyboardButton.A -> {
+                if (engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
+                    if (env.selected.x > 0) env.selected.x -= 1
+                }
+            }
+            KeyboardButton.D -> {
+                if (engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
+                    if (env.selected.x < env.size.width - 1) {
+                        env.selected.x += 1
+                    }
+                }
+            }
+            KeyboardButton.W -> {
+                if (engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
+                    if (env.selected.y > 0) env.selected.y -= 1
+                }
+            }
+            KeyboardButton.S -> {
+                if (engine.input.keyboard.isPressed(KeyboardButton.Shift)) {
+                    if (env.selected.y < env.size.height - 1) {
+                        env.selected.y += 1
+                    }
+                }
+            }
             else -> Unit
         }
     }

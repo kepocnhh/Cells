@@ -11,6 +11,7 @@ import sp.kx.math.measure.MutableDoubleMeasure
 import sp.kx.math.measure.speedOf
 import test.lwjgl.cells.entity.IntSize
 import test.lwjgl.cells.entity.MutableCamera
+import test.lwjgl.cells.entity.MutableIntPoint
 
 internal class CellsEngineLogics(
     private val engine: Engine,
@@ -24,6 +25,7 @@ internal class CellsEngineLogics(
         )
         MutableEnvironment(
             size = size,
+            selected = MutableIntPoint(x = 0, y = 0),
             camera = MutableCamera(
                 measure = measure,
                 speed = speedOf(8.0),

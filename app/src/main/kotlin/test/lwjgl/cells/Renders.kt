@@ -6,15 +6,12 @@ import sp.kx.lwjgl.entity.Color
 import sp.kx.lwjgl.entity.copy
 import sp.kx.math.Offset
 import sp.kx.math.Point
-import sp.kx.math.center
-import sp.kx.math.centerPoint
+import sp.kx.math.Size
 import sp.kx.math.copy
 import sp.kx.math.div
-import sp.kx.math.minus
 import sp.kx.math.offsetOf
 import sp.kx.math.pointOf
-import sp.kx.math.times
-import sp.kx.math.toOffset
+import sp.kx.math.sizeOf
 import sp.kx.math.toVector
 import sp.kx.math.vectorOf
 
@@ -113,6 +110,7 @@ internal class Renders(
             String.format("m: %6.2f", env.camera.measure.magnitude),
             String.format("o: %+6.2f %+6.2f", env.camera.offset.dX, env.camera.offset.dY),
             String.format("c: %+6.2f %+6.2f", psu.width / 2 - env.camera.offset.dX, psu.height / 2 - env.camera.offset.dY),
+            String.format("s: %2d %2d", env.selected.x, env.selected.y),
         ).forEachIndexed { index, text ->
             canvas.texts.draw(
                 color = Color.Green,
@@ -148,6 +146,14 @@ internal class Renders(
                 measure = measure,
             )
         }
+        canvas.polygons.drawRectangle(
+            color = Color.White,
+            pointTopLeft = pointOf(x = env.selected.x, y = env.selected.y),
+            size = Size.Reference,
+            lineWidth = 0.1,
+            offset = offset,
+            measure = measure,
+        )
         //
         if (env.debug) onRenderDebug(canvas = canvas)
     }
