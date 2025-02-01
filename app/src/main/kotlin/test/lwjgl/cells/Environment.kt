@@ -9,6 +9,7 @@ internal interface Environment {
     val grid: IntSize
     val cellSize: Size
     val selected: IntPoint
+    val focused: IntPoint
     val camera: Camera
     val offset: Boolean
     val fps: Double

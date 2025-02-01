@@ -30,6 +30,7 @@ internal class CellsEngineLogics(
             grid = grid,
             cellSize = cellSize,
             selected = MutableIntPoint(x = 0, y = 0),
+            focused = MutableIntPoint(x = 0, y = 0),
             camera = MutableCamera(
                 measure = measure,
                 speed = speedOf(8.0),

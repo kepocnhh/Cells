@@ -111,6 +111,7 @@ internal class Renders(
             String.format("o: %+6.2f %+6.2f", env.camera.offset.dX, env.camera.offset.dY),
             String.format("c: %+6.2f %+6.2f", psu.width / 2 - env.camera.offset.dX, psu.height / 2 - env.camera.offset.dY),
             String.format("s: %2d %2d", env.selected.x, env.selected.y),
+            String.format("f: %2d %2d", env.focused.x, env.focused.y),
         ).forEachIndexed { index, text ->
             canvas.texts.draw(
                 color = Color.Green,
@@ -131,7 +132,6 @@ internal class Renders(
                 color = Color.Gray,
                 vector = Point.Center.copy(x = x * env.cellSize.width)
                     .toVector(Offset.Empty.copy(dY = env.grid.height * env.cellSize.height)),
-                lineWidth = 0.1,
                 offset = offset,
                 measure = measure,
             )
@@ -141,11 +141,18 @@ internal class Renders(
                 color = Color.Gray,
                 vector = Point.Center.copy(y = y * env.cellSize.height)
                     .toVector(Offset.Empty.copy(dX = env.grid.width * env.cellSize.width)),
-                lineWidth = 0.1,
                 offset = offset,
                 measure = measure,
             )
         }
+        if (env.focused != env.selected) canvas.polygons.drawRectangle(
+            color = Color.Gray,
+            pointTopLeft = pointOf(x = env.focused.x * env.cellSize.width, y = env.focused.y * env.cellSize.height),
+            size = env.cellSize,
+            lineWidth = 0.1,
+            offset = offset,
+            measure = measure,
+        )
         canvas.polygons.drawRectangle(
             color = Color.White,
             pointTopLeft = pointOf(x = env.selected.x * env.cellSize.width, y = env.selected.y * env.cellSize.height),

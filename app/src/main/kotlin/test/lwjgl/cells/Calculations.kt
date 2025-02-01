@@ -6,9 +6,11 @@ import sp.kx.lwjgl.entity.input.KeyboardButton
 import sp.kx.math.MutableOffset
 import sp.kx.math.Offset
 import sp.kx.math.angleOf
+import sp.kx.math.div
 import sp.kx.math.isEmpty
 import sp.kx.math.measure.diff
 import sp.kx.math.measure.frequency
+import sp.kx.math.offsetOf
 import sp.kx.math.radians
 
 internal class Calculations(
@@ -45,5 +47,16 @@ internal class Calculations(
                 dY = length * kotlin.math.sin(angle),
             )
         }
+        //
+        val ps = engine.property.pictureSize
+        val psu = ps / env.camera.measure
+        val center = offsetOf(
+            dX = psu.width / 2 - env.camera.offset.dX,
+            dY = psu.height / 2 - env.camera.offset.dY,
+        )
+        env.focused.set(
+            x = java.lang.Math.floor(center.dX / env.cellSize.width).toInt(),
+            y = java.lang.Math.floor(center.dY / env.cellSize.height).toInt(),
+        )
     }
 }

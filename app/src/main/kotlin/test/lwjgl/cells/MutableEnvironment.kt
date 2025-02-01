@@ -9,6 +9,7 @@ internal class MutableEnvironment(
     override val grid: IntSize,
     override val cellSize: Size,
     override val selected: MutableIntPoint,
+    override val focused: MutableIntPoint,
     override val camera: MutableCamera,
     override var offset: Boolean,
     override var debug: Boolean,
